@@ -18,6 +18,7 @@ namespace myservice
             });
 
             Transports.DurableListenerAt(8567);
+            Publish.AllMessagesTo("tcp://localhost:8568");
         }
     }
 }

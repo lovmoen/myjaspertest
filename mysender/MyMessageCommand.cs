@@ -9,27 +9,29 @@ using System.Threading.Tasks;
 
 namespace mysender
 {
-    public class MyMessageCommand : OaktonCommand<JasperInput>
+    public class MyMessageInput : JasperInput
     {
-        private static ManualResetEvent _event = new ManualResetEvent(false);
+        [Description("Message number")]
+        public int MessageNumber { get; set; }
+    }
 
-        public override bool Execute(JasperInput input)
+    public class MyMessageCommand : OaktonAsyncCommand<MyMessageInput>
+    {
+        public MyMessageCommand()
         {
-            ExecuteAsync(input);
-            _event.WaitOne();
-
-            return true;
+            Usage("Send message with given number").Arguments(x => x.MessageNumber);
         }
 
-        private static async void ExecuteAsync(JasperInput input)
+        public override async Task<bool> Execute(MyMessageInput input)
         {
             using (var runtime = input.BuildHost(StartMode.Full))
             {
-                var m = new MyMessage { Id = Guid.NewGuid(), Message = "Test message" };
+                var m = new MyMessage { Id = Guid.NewGuid(), Message = $"#{input.MessageNumber}" };
                 await runtime.Messaging.Publish(m);
-                await Task.Delay(1000);
-                _event.Set();
+                MyResponseHandler.MyResponseEvent.WaitOne();
             }
+
+            return true;
         }
     }
 }

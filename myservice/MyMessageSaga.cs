@@ -1,4 +1,5 @@
-﻿using Jasper.Messaging.Sagas;
+﻿using Jasper.Messaging.Runtime.Invocation;
+using Jasper.Messaging.Sagas;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,13 @@ namespace myservice
                 Message = message
             };
 
-            return (state, new object[0]);
+            return (state, GetResponses(message));
+        }
+
+        private object[] GetResponses(MyMessage message)
+        {
+            var response = Respond.With(new MyResponse { Id = Guid.NewGuid(), Response = $"Response to {message.Message}" }).ToSender();
+            return new object[] { response };
         }
     }
 }
