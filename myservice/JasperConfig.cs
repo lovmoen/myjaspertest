@@ -1,8 +1,4 @@
-using System;
 using Jasper;
-using Jasper.CommandLine;
-using Jasper.Persistence.Marten;
-using Microsoft.Extensions.Configuration;
 
 namespace myservice
 {
@@ -10,15 +6,12 @@ namespace myservice
     {
         public JasperConfig()
         {
-            Include<MartenBackedPersistence>();
+            Transports.LightweightListenerAt(8567);
 
-            Settings.ConfigureMarten((context, marten) =>
-            {
-                marten.Connection(context.Configuration.GetConnectionString("my_conn_str"));
-            });
+            Publish.Message<MyResponse>().To("tcp://localhost:8568");
 
-            Transports.DurableListenerAt(8567);
-            Publish.AllMessagesTo("tcp://localhost:8568");
+            Handlers.Worker("myqueue")
+                .HandlesMessage<YetAnotherMessage>();
         }
     }
 }

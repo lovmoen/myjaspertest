@@ -9,7 +9,7 @@ namespace mysender
         {
             return JasperHost.Run(args, _ =>
             {
-                _.Publish.AllMessagesTo("durable://localhost:8567");
+                _.Publish.AllMessagesTo("tcp://localhost:8567");
                 _.Transports.LightweightListenerAt(8568);
             });
         }
