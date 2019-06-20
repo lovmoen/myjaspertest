@@ -9,6 +9,8 @@ namespace myservice
         {
             // If Schedule() is called instead of ScheduleSend(), the YetAnotherMessage handler is never called.
             //bus.Schedule(new YetAnotherMessage(), TimeSpan.FromSeconds(10));
+
+            // When ScheduleSend() is called, the YetAnotherMessage handler is invoked immediately.
             bus.ScheduleSend(new YetAnotherMessage(), TimeSpan.FromSeconds(10));
         }
 
