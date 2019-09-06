@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>myservice</AssemblyName>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Jasper" Version="0.9.12" />
-    <PackageReference Include="Jasper.Persistence.Marten" Version="0.9.12" />
+    <PackageReference Include="Jasper" Version="0.9.13" />
+    <PackageReference Include="Jasper.Persistence.Marten" Version="0.9.13" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
