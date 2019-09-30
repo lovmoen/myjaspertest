@@ -1,11 +1,12 @@
 ﻿using Jasper;
 using System;
+using System.Threading.Tasks;
 
 namespace mysender
 {
     class Program
     {
-        static int Main(string[] args)
+        static Task<int> Main(string[] args)
         {
             return JasperHost.Run(args, _ =>
             {
