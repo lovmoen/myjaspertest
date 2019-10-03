@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jasper" Version="0.9.11" />
+    <PackageReference Include="Jasper" Version="0.9.14" />
   </ItemGroup>
 
   <ItemGroup>
