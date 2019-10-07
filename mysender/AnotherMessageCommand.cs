@@ -1,19 +1,24 @@
-﻿using Jasper.CommandLine;
-using myservice;
+﻿using myservice;
 using Oakton;
 using System.Threading.Tasks;
+using Jasper.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+using Oakton.AspNetCore;
 
 namespace mysender
 {
-    public class AnotherMessageCommand : OaktonAsyncCommand<JasperInput>
+    public class AnotherMessageCommand : OaktonAsyncCommand<AspNetCoreInput>
     {
-        public override async Task<bool> Execute(JasperInput input)
+        public override async Task<bool> Execute(AspNetCoreInput input)
         {
-            using (var runtime = input.BuildHost(StartMode.Full))
+            using (var host = input.BuildHost())
             {
+                await host.StartAsync();
+                var messaging = host.Services.GetRequiredService<IMessageContext>();
                 var m = new AnotherMessage();
-                await runtime.Messaging.Publish(m);
+                await messaging.Publish(m);
                 MyResponseHandler.MyResponseEvent.WaitOne();
+                await host.StopAsync();
             }
 
             return true;

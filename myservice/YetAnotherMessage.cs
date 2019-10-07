@@ -6,5 +6,6 @@ namespace myservice
 {
     public class YetAnotherMessage
     {
+        public DateTime TimeStamp { get; set; }
     }
 }

@@ -12,12 +12,12 @@ namespace myservice
             //await bus.Schedule(new YetAnotherMessage(), TimeSpan.FromSeconds(10));
 
             // When ScheduleSend() is called, the YetAnotherMessage handler is invoked immediately.
-            await bus.ScheduleSend(new YetAnotherMessage(), TimeSpan.FromSeconds(10));
+            await bus.ScheduleSend(new YetAnotherMessage {TimeStamp = DateTime.UtcNow}, TimeSpan.FromSeconds(10));
         }
 
         public object Handle(YetAnotherMessage message)
         {
-            return new MyResponse { Id = Guid.NewGuid(), Response = "YetAnotherMessage handled" };
+            return new MyResponse { Id = Guid.NewGuid(), Response = $"YetAnotherMessage created at {message.TimeStamp} handled at {DateTime.UtcNow}" };
         }
     }
 }

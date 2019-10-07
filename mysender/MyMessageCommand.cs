@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Jasper.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+using Oakton.AspNetCore;
 
 namespace mysender
 {
-    public class MyMessageInput : JasperInput
+    public class MyMessageInput : AspNetCoreInput
     {
         [Description("Message number")]
         public int MessageNumber { get; set; }
@@ -24,11 +27,14 @@ namespace mysender
 
         public override async Task<bool> Execute(MyMessageInput input)
         {
-            using (var runtime = input.BuildHost(StartMode.Full))
+            using (var host = input.BuildHost())
             {
+                await host.StartAsync();
+                var messaging = host.Services.GetRequiredService<IMessagePublisher>();
                 var m = new MyMessage { Id = Guid.NewGuid(), Message = $"#{input.MessageNumber}" };
-                await runtime.Messaging.Publish(m);
+                await messaging.Publish(m);
                 MyResponseHandler.MyResponseEvent.WaitOne();
+                await host.StopAsync();
             }
 
             return true;

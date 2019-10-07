@@ -15,12 +15,12 @@ namespace myservice
                 marten.Connection(context.Configuration.GetConnectionString("my_conn_str"));
             });
 
-            Transports.LightweightListenerAt(8567);
+            Transports.LightweightListenerAt(9998);
 
-            Publish.Message<MyResponse>().To("tcp://localhost:8568");
+            Publish.Message<MyResponse>().To("tcp://localhost:9999");
 
             Handlers.Worker("myqueue")
-                .IsDurable()
+                //.IsDurable()
                 .HandlesMessage<YetAnotherMessage>();
         }
     }
